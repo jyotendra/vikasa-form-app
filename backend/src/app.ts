@@ -1,12 +1,25 @@
 import { join } from "node:path";
 import AutoLoad, { AutoloadPluginOptions } from "@fastify/autoload";
 import { FastifyPluginAsync, FastifyServerOptions } from "fastify";
+import appEnvConfig from "./config/env";
+
+interface AwsOptions {
+  region: string;
+  endpoint?: string;
+}
 
 export interface AppOptions
   extends FastifyServerOptions,
-    Partial<AutoloadPluginOptions> {}
+    Partial<AutoloadPluginOptions> {
+  aws: AwsOptions;
+}
 // Pass --options via CLI arguments in command to enable these options.
-const options: AppOptions = {};
+const options: AppOptions = {
+  aws: {
+    region: appEnvConfig.region,
+    endpoint: appEnvConfig.endpoint,
+  },
+};
 
 const app: FastifyPluginAsync<AppOptions> = async (
   fastify,
