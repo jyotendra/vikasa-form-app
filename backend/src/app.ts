@@ -6,6 +6,8 @@ import appEnvConfig from "./config/env";
 interface AwsOptions {
   region: string;
   endpoint?: string;
+  AWS_ACCESS_KEY_ID?: string;
+  AWS_SECRET_ACCESS_KEY?: string;
 }
 
 export interface AppOptions
@@ -32,9 +34,11 @@ const app: FastifyPluginAsync<AppOptions> = async (
   // those should be support plugins that are reused
   // through your application
 
+  const options = { ...appOptions, ...opts };
+
   void fastify.register(AutoLoad, {
     dir: join(__dirname, "plugins"),
-    options: { ...appOptions, ...opts },
+    options: options,
   });
 
   // This loads all plugins defined in routes
