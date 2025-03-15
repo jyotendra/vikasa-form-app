@@ -13,8 +13,7 @@ export interface AppOptions
     Partial<AutoloadPluginOptions> {
   aws: AwsOptions;
 }
-// Pass --options via CLI arguments in command to enable these options.
-const options: AppOptions = {
+const appOptions: AppOptions = {
   aws: {
     region: appEnvConfig.region,
     endpoint: appEnvConfig.endpoint,
@@ -35,7 +34,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
 
   void fastify.register(AutoLoad, {
     dir: join(__dirname, "plugins"),
-    options: opts,
+    options: { ...appOptions, ...opts },
   });
 
   // This loads all plugins defined in routes
@@ -50,4 +49,4 @@ const app: FastifyPluginAsync<AppOptions> = async (
 };
 
 export default app;
-export { app, options };
+export { app, appOptions as options };
