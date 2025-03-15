@@ -36,15 +36,6 @@ services:
       - AWS_SECRET_ACCESS_KEY=dummy
       - AWS_REGION=us-east-1
 
-  dynamodb:
-    image: amazon/dynamodb-local
-    container_name: dynamodb
-    ports:
-      - "8000:8000"
-    networks:
-      - vikasa-network
-    command: ["-jar", "DynamoDBLocal.jar", "-sharedDb"]
-
   localstack:
     container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
     image: localstack/localstack:4.2
