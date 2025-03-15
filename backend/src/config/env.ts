@@ -3,7 +3,6 @@ import { config } from "dotenv";
 enum AppEnv {
   Development = "development",
   Production = "production",
-  Test = "test",
 }
 
 interface EnvConfig {
