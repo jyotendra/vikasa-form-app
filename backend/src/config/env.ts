@@ -16,8 +16,8 @@ function checkAppEnv(): AppEnv {
   const env = process.env.NODE_ENV || AppEnv.Development;
 
   // check the env is available as option in the enum
-  if (!(env in AppEnv)) {
-    throw new Error("Invalid environment");
+  if (!Object.values(AppEnv).includes(env as AppEnv)) {
+    throw new Error(`Invalid environment ${env}`);
   }
 
   return env as AppEnv;
