@@ -8,7 +8,8 @@
   },
   "scripts": {
     "delete:dist": "./node_modules/.bin/rimraf dist",
-    "test": "npm run build:ts && tsc -p test/tsconfig.json && c8 node --test -r ts-node/register ${TEST_FILES:-./test/**/*.test.ts}",
+    "test:unit": "npm run build:ts && tsc -p test/tsconfig.json && c8 node --test -r ts-node/register ${TEST_FILES:-./test/unit/**/*.test.ts}",
+    "test:integration": "npm run build:ts && tsc -p test/tsconfig.json && c8 node --test -r ts-node/register ${TEST_FILES:-./test/integration/*.test.ts}",
     "start": "npm run build:ts && cross-env NODE_ENV=development && fastify start -l info dist/app.js",
     "start:prod": "npm run build:ts && cross-env NODE_ENV=production && fastify start -l info dist/app.js",
     "build:ts": "tsc",

@@ -14,7 +14,7 @@ async function runTests() {
   // run the npm test command
   console.log("Running tests");
   return new Promise((resolve, reject) => {
-    const child = spawn("npm", ["run", "test"], {
+    const child = spawn("npm", ["run", "test:integration"], {
       stdio: "inherit", // This ensures the output is printed directly to the console
     });
 

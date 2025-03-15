@@ -23,8 +23,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8002:3000"
-    depends_on:
-      - dynamodb
     volumes:
       - ./backend:/app
       - /app/node_modules
