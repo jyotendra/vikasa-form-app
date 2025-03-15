@@ -3,10 +3,21 @@ const helper = require("fastify-cli/helper.js");
 import * as path from "node:path";
 import * as test from "node:test";
 import { FastifyInstance } from "fastify";
+import { createDynamoDBClient } from "../src/config/dynamodb.config";
 
 export type TestContext = {
   after: typeof test.after;
 };
+
+// redeclaring module seems like a hack,
+// it should have already resolved correctly from the src/plugins/**/*.ts
+// but it doesn't, so we have to redeclare it here
+// TODO: revisit this later
+declare module "fastify" {
+  interface FastifyInstance {
+    dynamodb: ReturnType<typeof createDynamoDBClient>;
+  }
+}
 
 const AppPath = path.join(__dirname, "..", "src", "app.ts");
 
