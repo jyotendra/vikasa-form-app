@@ -3,7 +3,7 @@ import {
   CognitoIdentityProviderClientConfig,
 } from "@aws-sdk/client-cognito-identity-provider";
 
-export function createCongitoClient(
+export function createCogitoClient(
   config: CognitoIdentityProviderClientConfig
 ) {
   const client = new CognitoIdentityProviderClient({

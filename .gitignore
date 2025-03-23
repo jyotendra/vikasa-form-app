@@ -3,4 +3,4 @@
 # volume for localstack
 volume
 # for cognito service
-.cognito
+.cognito-local

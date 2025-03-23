@@ -14,7 +14,6 @@ const dynamoDBPlugin: FastifyPluginAsync<AppOptions> = async (
       endpoint: options.aws.localstackEndpoint,
     }),
   };
-  console.log("Creating DynamoDB client with params", clientParams);
   const docClient = createDynamoDBClient(clientParams);
 
   fastify.decorate("dynamodb", docClient);

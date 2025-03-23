@@ -4,6 +4,7 @@ import * as path from "node:path";
 import * as test from "node:test";
 import { FastifyInstance } from "fastify";
 import { createDynamoDBClient } from "../src/config/dynamodb.config";
+import { createCogitoClient } from "../src/config/cognito.config";
 
 export type TestContext = {
   after: typeof test.after;
@@ -16,6 +17,7 @@ export type TestContext = {
 declare module "fastify" {
   interface FastifyInstance {
     dynamodb: ReturnType<typeof createDynamoDBClient>;
+    cognito: ReturnType<typeof createCogitoClient>;
   }
 }
 

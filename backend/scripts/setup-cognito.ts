@@ -5,7 +5,7 @@ import {
   ListUsersCommand,
   SignUpCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
-import { createCongitoClient } from "../src/config/cognito.config";
+import { createCogitoClient } from "../src/config/cognito.config";
 import appEnvConfig from "../src/env-loader";
 
 console.log(`Using default configuration for ${appEnvConfig}`);
@@ -18,7 +18,7 @@ const testClientName = "test-client";
 
 const userConfirmationCode = "123456";
 
-const cognitoClient = createCongitoClient({
+const cognitoClient = createCogitoClient({
   region: appEnvConfig.AWS_REGION,
   endpoint: appEnvConfig.COGNITO_ENDPOINT,
 });
