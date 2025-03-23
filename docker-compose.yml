@@ -33,7 +33,7 @@ services:
     environment:
       - DOCKER_UP=1
       - LOCALSTACK_ENDPOINT=http://localstack:4566
-      - COGNITO_ENDPOINT=http://localstack:4566
+      - COGNITO_ENDPOINT=http://cognito:9229
     depends_on:
       - localstack
       - cognito

@@ -10,9 +10,17 @@ import appEnvConfig from "../src/env-loader";
 
 console.log(`Using default configuration for ${appEnvConfig}`);
 
+const testEmail = "user@test.com";
+const testPassword = "user123";
+
+const testPoolName = "test-user-pool";
+const testClientName = "test-client";
+
+const userConfirmationCode = "123456";
+
 const cognitoClient = createCongitoClient({
-  region: "us-east-1",
-  endpoint: "http://localhost:9229",
+  region: appEnvConfig.AWS_REGION,
+  endpoint: appEnvConfig.COGNITO_ENDPOINT,
 });
 
 type PoolCreationResponse = {
@@ -23,7 +31,7 @@ type PoolCreationResponse = {
 async function setupCognitoOnLocal(): Promise<PoolCreationResponse> {
   // create a user pool
   const createUserPoolCommand = new CreateUserPoolCommand({
-    PoolName: "test-user-pool",
+    PoolName: testPoolName,
   });
 
   const createUserPoolResponse = await cognitoClient.send(
@@ -37,7 +45,7 @@ async function setupCognitoOnLocal(): Promise<PoolCreationResponse> {
 
   // add client to the pool
   const createUserPoolClientCommand = new CreateUserPoolClientCommand({
-    ClientName: "test-client",
+    ClientName: testClientName,
     UserPoolId: poolId,
   });
   const createUserPoolClientResponse = await cognitoClient.send(
@@ -52,27 +60,22 @@ async function setupCognitoOnLocal(): Promise<PoolCreationResponse> {
   return { UserPoolId: poolId, ClientId: clientId };
 }
 
-function getUserConfirmationCodeFromLogs() {
-  return "123456";
-}
-
 async function setupUser() {
   const poolResponse = await setupCognitoOnLocal();
   // signup user
   const signUpCommand = new SignUpCommand({
     ClientId: poolResponse.ClientId,
-    Username: "test-user@test.com",
-    Password: "test-password",
+    Username: testEmail,
+    Password: testPassword,
   });
   const signUpResponse = await cognitoClient.send(signUpCommand);
   console.log("User signed up", signUpResponse);
 
-  const confirmationCode = getUserConfirmationCodeFromLogs();
   // confirm the user
   const confirmSignUpCommand = new ConfirmSignUpCommand({
     ClientId: poolResponse.ClientId,
-    Username: "test-user@test.com",
-    ConfirmationCode: confirmationCode,
+    Username: testEmail,
+    ConfirmationCode: userConfirmationCode,
   });
   const confirmSignUpResponse = await cognitoClient.send(confirmSignUpCommand);
   console.log("User confirmed", confirmSignUpResponse);
