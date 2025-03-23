@@ -47,6 +47,15 @@ services:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
 
+  cognito:
+    image: jagregory/cognito-local:latest
+    environment:
+      - CODE=123456 # https://github.com/jagregory/cognito-local?tab=readme-ov-file#confirmation-codes
+    ports:
+      - "9229:9229"
+    volumes:
+      - ./.cognito:/app/.cognito
+
 networks:
   vikasa-network:
     driver: bridge
