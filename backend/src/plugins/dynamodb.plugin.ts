@@ -2,6 +2,7 @@ import fp from "fastify-plugin";
 import { FastifyPluginAsync } from "fastify";
 import { createDynamoDBClient } from "../config/dynamodb.config";
 import { AppOptions } from "../app";
+import { AppEnv } from "../env-loader";
 
 const dynamoDBPlugin: FastifyPluginAsync<AppOptions> = async (
   fastify,
@@ -9,7 +10,9 @@ const dynamoDBPlugin: FastifyPluginAsync<AppOptions> = async (
 ) => {
   const docClient = createDynamoDBClient({
     region: options.aws.region,
-    endpoint: options.aws.endpoint,
+    ...(options.appEnv === AppEnv.Development && {
+      endpoint: options.aws.localstackEndpoint,
+    }),
   });
 
   fastify.decorate("dynamodb", docClient);

@@ -6,7 +6,7 @@ import {
   SignUpCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { createCongitoClient } from "../src/config/cognito.config";
-import appEnvConfig from "../src/config/env";
+import appEnvConfig from "../src/env-loader";
 
 console.log(`Using default configuration for ${appEnvConfig}`);
 

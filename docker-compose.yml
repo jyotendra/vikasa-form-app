@@ -54,7 +54,7 @@ services:
     ports:
       - "9229:9229"
     volumes:
-      - ./.cognito:/app/.cognito
+      - ./.cognito-local:/app/.cognito
 
 networks:
   vikasa-network:
