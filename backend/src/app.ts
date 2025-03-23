@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import AutoLoad, { AutoloadPluginOptions } from "@fastify/autoload";
 import { FastifyPluginAsync, FastifyServerOptions } from "fastify";
-import appEnvConfig, { AppEnv } from "./env-loader";
+import appEnvConfig, { AppEnv, isDevelopment } from "./env-loader";
 
 interface AwsOptions {
   region: string;
@@ -26,7 +26,7 @@ const appOptions: AppOptions = {
     cognitoClientId: appEnvConfig.COGNITO_CLIENT_ID,
     awsAccessKeyId: appEnvConfig.AWS_ACCESS_KEY_ID,
     awsSecretAccessKey: appEnvConfig.AWS_SECRET_ACCESS_KEY,
-    ...(appEnvConfig.APP_ENV === AppEnv.Development && {
+    ...(isDevelopment && {
       localstackEndpoint: appEnvConfig.LOCALSTACK_ENDPOINT,
       cognitoLocalEndpoint: appEnvConfig.COGNITO_ENDPOINT,
     }),

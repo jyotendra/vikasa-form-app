@@ -92,5 +92,6 @@ function checkAppEnv(): AppEnv {
 }
 
 const appEnvConfig = getEnvConfig();
-console.log("App environment configuration", appEnvConfig);
+
+export const isDevelopment = appEnvConfig.APP_ENV === AppEnv.Development;
 export default appEnvConfig;
