@@ -19,9 +19,7 @@ interface EnvConfig {
   APP_ENV: AppEnv;
 }
 
-function loadEnvFile(): AppEnv {
-  const env = checkAppEnv();
-
+function loadEnvFile(env: AppEnv): void {
   // Only look for .env file in development environment
   if (env === AppEnv.Development) {
     const envFile = `.env.dev`;
@@ -37,7 +35,6 @@ function loadEnvFile(): AppEnv {
   // In production and CI, rely on environment variables from Docker/system
   // i.e no .env file will be provided in the filesystem
   checkEnvVariablesAreSet(env);
-  return env;
 }
 
 function checkEnvVariablesAreSet(env: AppEnv): void {
@@ -64,16 +61,20 @@ function checkEnvVariablesAreSet(env: AppEnv): void {
 }
 
 function getEnvConfig(): EnvConfig {
-  const appEnv = loadEnvFile();
+  const env = checkAppEnv();
+  if (env === AppEnv.Development && !process.env.DOCKER_UP) {
+    // load this only when running locally; not via docker-compose
+    loadEnvFile(env);
+  }
   const envConfig: EnvConfig = {
-    AWS_REGION: process.env.region!,
-    LOCALSTACK_ENDPOINT: process.env.endpoint || "",
+    AWS_REGION: process.env.AWS_REGION!,
+    LOCALSTACK_ENDPOINT: process.env.LOCALSTACK_ENDPOINT || "",
     COGNITO_ENDPOINT: process.env.COGNITO_ENDPOINT || "",
     COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
     COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID!,
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID!,
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY!,
-    APP_ENV: appEnv,
+    APP_ENV: env,
   };
   return envConfig;
 }
@@ -91,4 +92,5 @@ function checkAppEnv(): AppEnv {
 }
 
 const appEnvConfig = getEnvConfig();
+console.log("App environment configuration", appEnvConfig);
 export default appEnvConfig;

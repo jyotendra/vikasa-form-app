@@ -28,11 +28,15 @@ services:
       - /app/node_modules
     networks:
       - vikasa-network
+    env_file:
+      - ./backend/.env.dev
     environment:
-      - DATABASE_URL=http://dynamodb:8000
-      - AWS_ACCESS_KEY_ID=dummy
-      - AWS_SECRET_ACCESS_KEY=dummy
-      - AWS_REGION=us-east-1
+      - DOCKER_UP=1
+      - LOCALSTACK_ENDPOINT=http://localstack:4566
+      - COGNITO_ENDPOINT=http://localstack:4566
+    depends_on:
+      - localstack
+      - cognito
 
   localstack:
     container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
@@ -46,6 +50,8 @@ services:
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - vikasa-network
 
   cognito:
     image: jagregory/cognito-local:latest
@@ -55,6 +61,8 @@ services:
       - "9229:9229"
     volumes:
       - ./.cognito-local:/app/.cognito
+    networks:
+      - vikasa-network
 
 networks:
   vikasa-network:
