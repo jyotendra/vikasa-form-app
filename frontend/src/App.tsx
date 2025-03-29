@@ -1,11 +1,6 @@
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { Login } from "./components/Login";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import PersistentLayout from "./components/PersistentLayout";
 import Home from "./components/Home";
 import About from "./components/About";

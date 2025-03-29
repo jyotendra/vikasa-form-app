@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Link as RouterLink } from "react-router-dom";
+import { Outlet, Link as RouterLink } from "react-router";
 import {
   AppBar,
   Toolbar,
@@ -31,22 +31,28 @@ const PersistentLayout: React.FC = () => {
       setMobileOpen(false);
     }
   };
-  
 
   const drawer = (
     <Box>
-  <Toolbar />
-  <List>
-    <ListItemButton component={RouterLink} to="/home" onClick={handleNavClick}>
-      <ListItemText primary="Home" />
-    </ListItemButton>
-    <ListItemButton component={RouterLink} to="/about" onClick={handleNavClick}>
-      <ListItemText primary="About" />
-    </ListItemButton>
-    {/* Add more routes here if needed */}
-  </List>
-</Box>
-
+      <Toolbar />
+      <List>
+        <ListItemButton
+          component={RouterLink}
+          to="/home"
+          onClick={handleNavClick}
+        >
+          <ListItemText primary="Home" />
+        </ListItemButton>
+        <ListItemButton
+          component={RouterLink}
+          to="/about"
+          onClick={handleNavClick}
+        >
+          <ListItemText primary="About" />
+        </ListItemButton>
+        {/* Add more routes here if needed */}
+      </List>
+    </Box>
   );
 
   return (
@@ -82,7 +88,10 @@ const PersistentLayout: React.FC = () => {
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
           }}
         >
           {drawer}
@@ -93,7 +102,10 @@ const PersistentLayout: React.FC = () => {
           open
           sx={{
             display: { xs: "none", md: "block" },
-            "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
           }}
         >
           {drawer}

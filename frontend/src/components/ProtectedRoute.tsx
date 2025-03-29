@@ -1,8 +1,8 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAtomValue } from 'jotai';
-import { userAtom } from '../store/authAtoms';
-import { CircularProgress, Box } from '@mui/material';
+import React from "react";
+import { Navigate } from "react-router";
+import { useAtomValue } from "jotai";
+import { userAtom } from "../store/authAtoms";
+import { CircularProgress, Box } from "@mui/material";
 
 export interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -10,7 +10,11 @@ export interface ProtectedRouteProps {
   fallback?: React.ReactNode;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredAuth, fallback }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  requiredAuth,
+  fallback,
+}) => {
   const user = useAtomValue(userAtom);
 
   // Determine if the user is authenticated by checking if a token exists.
