@@ -23,5 +23,5 @@ npm run dev
 2. The unit tests aren't dependent on any external services and can be invoked using: `npm run test:unit`.
 3. The integration tests are dependent on external services and must be invoked using docker: `docker compose run backend test:integration`. We facilitate passing command to the boot-up script. Check `backend/entrypoint.sh` for more details.
 4. When starting up you might notice two folders created on root:
-    - `.cognito-local`: This is the local cognito database. It is deliberately committed since it has test user information which is used by the integration tests.
+    - `.cognito-local`: This is the local cognito database. It is deliberately committed since it has test user information which is used by the integration tests. Ideally, you should not need to run the setup-cognito script since we are storing the local credentials in the `.cognito-local` folder. 
     - `volume`: This is created by [localstack](https://www.localstack.cloud/). Think of it as an emulated AWS environment. It must not be committed and the tests should enrich the data themselves if needed. Of course, the test step should also clean up after itself.
