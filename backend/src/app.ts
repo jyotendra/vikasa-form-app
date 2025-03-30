@@ -1,12 +1,38 @@
 import { join } from "node:path";
 import AutoLoad, { AutoloadPluginOptions } from "@fastify/autoload";
 import { FastifyPluginAsync, FastifyServerOptions } from "fastify";
+import appEnvConfig, { AppEnv, isDevelopment } from "./env-loader";
+
+interface AwsOptions {
+  region: string;
+  localstackEndpoint?: string;
+  cognitoLocalEndpoint?: string;
+  cognitoUserPoolId: string;
+  cognitoClientId: string;
+  awsAccessKeyId: string;
+  awsSecretAccessKey: string;
+}
 
 export interface AppOptions
   extends FastifyServerOptions,
-    Partial<AutoloadPluginOptions> {}
-// Pass --options via CLI arguments in command to enable these options.
-const options: AppOptions = {};
+    Partial<AutoloadPluginOptions> {
+  aws: AwsOptions;
+  appEnv: AppEnv;
+}
+const appOptions: AppOptions = {
+  aws: {
+    region: appEnvConfig.AWS_REGION,
+    cognitoUserPoolId: appEnvConfig.COGNITO_USER_POOL_ID,
+    cognitoClientId: appEnvConfig.COGNITO_CLIENT_ID,
+    awsAccessKeyId: appEnvConfig.AWS_ACCESS_KEY_ID,
+    awsSecretAccessKey: appEnvConfig.AWS_SECRET_ACCESS_KEY,
+    ...(isDevelopment && {
+      localstackEndpoint: appEnvConfig.LOCALSTACK_ENDPOINT,
+      cognitoLocalEndpoint: appEnvConfig.COGNITO_ENDPOINT,
+    }),
+  },
+  appEnv: appEnvConfig.APP_ENV,
+};
 
 const app: FastifyPluginAsync<AppOptions> = async (
   fastify,
@@ -19,9 +45,12 @@ const app: FastifyPluginAsync<AppOptions> = async (
   // This loads all plugins defined in plugins
   // those should be support plugins that are reused
   // through your application
+
+  const options = { ...appOptions, ...opts };
+
   void fastify.register(AutoLoad, {
     dir: join(__dirname, "plugins"),
-    options: opts,
+    options: options,
   });
 
   // This loads all plugins defined in routes
@@ -36,4 +65,4 @@ const app: FastifyPluginAsync<AppOptions> = async (
 };
 
 export default app;
-export { app, options };
+export { app, appOptions as options };

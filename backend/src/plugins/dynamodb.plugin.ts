@@ -1,30 +1,33 @@
-import fp from 'fastify-plugin';
-import { FastifyPluginAsync } from 'fastify';
-import { createDynamoDBClient } from '../config/dynamodb.config';
+import fp from "fastify-plugin";
+import { FastifyPluginAsync } from "fastify";
+import { createDynamoDBClient } from "../config/dynamodb.config";
+import { AppOptions } from "../app";
+import { isDevelopment } from "../env-loader";
 
-interface DynamoDBPluginOptions {
-  region: string;
-  endpoint?: string;
-}
+const dynamoDBPlugin: FastifyPluginAsync<AppOptions> = async (
+  fastify,
+  options
+) => {
+  const clientParams = {
+    region: options.aws.region,
+    ...(isDevelopment && {
+      endpoint: options.aws.localstackEndpoint,
+    }),
+  };
+  const docClient = createDynamoDBClient(clientParams);
 
-const dynamoDBPlugin: FastifyPluginAsync<DynamoDBPluginOptions> = async (fastify, options) => {
-  const docClient = createDynamoDBClient({
-    region: options.region,
-    endpoint: options.endpoint,
-  });
+  fastify.decorate("dynamodb", docClient);
 
-  fastify.decorate('dynamodb', docClient);
-
-  fastify.addHook('onClose', (instance, done) => {
+  fastify.addHook("onClose", (instance, done) => {
     done();
   });
 };
 
 export default fp(dynamoDBPlugin, {
-  name: 'dynamodb',
+  name: "dynamodb",
 });
 
-declare module 'fastify' {
+declare module "fastify" {
   interface FastifyInstance {
     dynamodb: ReturnType<typeof createDynamoDBClient>;
   }

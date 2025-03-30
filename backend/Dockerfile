@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:20.19.0-alpine3.21
 
 WORKDIR /app
 
@@ -10,4 +10,5 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+RUN chmod +x ./entrypoint.sh
+ENTRYPOINT ["sh", "/app/entrypoint.sh"]

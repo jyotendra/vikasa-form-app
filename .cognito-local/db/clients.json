@@ -1,0 +1,16 @@
+{
+  "Clients": {
+    "0zvt2f3lo4rkfi66zzr6mqm3d": {
+      "ClientId": "0zvt2f3lo4rkfi66zzr6mqm3d",
+      "ClientName": "test-client",
+      "CreationDate": "2025-03-23T13:34:57.021Z",
+      "LastModifiedDate": "2025-03-23T13:34:57.021Z",
+      "TokenValidityUnits": {
+        "AccessToken": "hours",
+        "IdToken": "minutes",
+        "RefreshToken": "days"
+      },
+      "UserPoolId": "local_1keBLzQp"
+    }
+  }
+}

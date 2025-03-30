@@ -1,2 +1,4 @@
 .history
 .vscode
+# volume for localstack
+volume
