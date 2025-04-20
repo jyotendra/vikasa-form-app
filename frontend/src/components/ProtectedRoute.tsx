@@ -1,8 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router";
 import { useAtomValue } from "jotai";
-import { userAtom } from "../store/authAtoms";
-import { CircularProgress, Box } from "@mui/material";
+import { userAccessToken } from "../store/authAtoms";
 
 export interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -15,10 +14,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requiredAuth,
   fallback,
 }) => {
-  const user = useAtomValue(userAtom);
+  const authValue = useAtomValue(userAccessToken);
 
   // Determine if the user is authenticated by checking if a token exists.
-  const isAuthenticated = user.token !== null;
+  const isAuthenticated = authValue !== null;
 
   // (Optional) If you had an async auth check, you might have a loading state here.
   // For this example, we assume that the auth check is synchronous.
