@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.787.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.1.1",
@@ -19,7 +20,10 @@
     "axios": "^1.7.9",
     "dexie": "^4.0.10",
     "dexie-react-hooks": "^1.1.7",
+    "install": "^0.13.0",
     "jotai": "^2.12.1",
+    "notistack": "^3.0.2",
+    "npm": "^11.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2",
@@ -43,7 +47,7 @@
     "zod": "^3.24.2"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development dotenv -e .env.dev react-scripts start",
+    "dev": "cross-env NODE_ENV=development dotenv -e .env.dev react-scripts start",
     "build": "react-scripts build",
     "test:compose": "react-scripts test",
     "test": "cross-env NODE_ENV=development dotenv -e .env.dev react-scripts test",

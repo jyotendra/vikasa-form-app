@@ -5,6 +5,9 @@ import PersistentLayout from "./components/PersistentLayout";
 import Home from "./components/Home";
 import About from "./components/About";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { useEffect } from "react";
+import { validateEnvVariables } from "./helpers/env";
+import { SnackbarProvider } from "notistack";
 
 const theme = createTheme({
   components: {
@@ -25,38 +28,44 @@ const theme = createTheme({
 });
 
 function App() {
+  useEffect(() => {
+    validateEnvVariables();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Routes>
-          {/* Public Route: Login page (accessible only if not authenticated) */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute requiredAuth={false}>
-                <Login />
-              </ProtectedRoute>
-            }
-          />
+      <SnackbarProvider>
+        <Router>
+          <Routes>
+            {/* Public Route: Login page (accessible only if not authenticated) */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute requiredAuth={false}>
+                  <Login />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Protected Routes: Accessible only if authenticated.
+            {/* Protected Routes: Accessible only if authenticated.
               These routes use the persistent layout. */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute requiredAuth={true}>
-                <PersistentLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="home" element={<Home />} />
-            <Route path="about" element={<About />} />
-            {/* Fallback: any unmatched route under authenticated area redirects to /home */}
-            <Route path="*" element={<Navigate to="/home" replace />} />
-          </Route>
-        </Routes>
-      </Router>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute requiredAuth={true}>
+                  <PersistentLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="home" element={<Home />} />
+              <Route path="about" element={<About />} />
+              {/* Fallback: any unmatched route under authenticated area redirects to /home */}
+              <Route path="*" element={<Navigate to="/home" replace />} />
+            </Route>
+          </Routes>
+        </Router>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }
