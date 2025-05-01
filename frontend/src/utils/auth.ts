@@ -4,7 +4,7 @@ import {
   InitiateAuthCommand,
   InitiateAuthCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
-import { AppEnv, NODE_ENV, NodeEnvEnum } from "../helpers/env";
+import { AppEnv, APP_MODE, NodeEnvEnum } from "../helpers/env";
 import { writableUserAuthAtom } from "../store/authAtoms";
 import { useAtom } from "jotai";
 import { useSnackbar } from "notistack";
@@ -17,7 +17,7 @@ const cognitoConfig: CognitoIdentityProviderClientConfig = {
   },
 };
 
-if (NODE_ENV === NodeEnvEnum.Development) {
+if (APP_MODE === NodeEnvEnum.Development) {
   cognitoConfig.endpoint = AppEnv.VITE_COGNITO_ENDPOINT;
 }
 

@@ -10,11 +10,12 @@ export const AppEnv = {
 };
 
 export enum NodeEnvEnum {
-  Development = "dev",
-  Production = "prod",
+  Development = "development",
+  Production = "production",
 }
 
-export const NODE_ENV = envVar.MODE as NodeEnvEnum;
+// NODE_ENV and Mode in Vite are different: https://vite.dev/guide/env-and-mode#node-env-and-modes
+export const APP_MODE = envVar.MODE as NodeEnvEnum;
 
 export const validateEnvVariables = (): void => {
   const missingEnvVars = Object.entries(AppEnv)
@@ -27,7 +28,7 @@ export const validateEnvVariables = (): void => {
     );
   }
 
-  if (!NODE_ENV) {
+  if (!APP_MODE) {
     throw new Error("Missing required environment variable: NODE_ENV");
   }
 };

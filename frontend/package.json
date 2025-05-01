@@ -44,9 +44,9 @@
     "zod": "^3.24.2"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev dotenv -e .env.dev vite",
+    "dev": "cross-env NODE_ENV=development dotenv -e .env.dev vite",
     "build": "vite build",
-    "test": "cross-env NODE_ENV=dev dotenv -e .env.dev vitest"
+    "test": "cross-env NODE_ENV=development dotenv -e .env.dev vitest"
   },
   "eslintConfig": {
     "extends": [
