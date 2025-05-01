@@ -1,19 +1,20 @@
+const envVar = import.meta.env;
 export const AppEnv = {
-  REACT_APP_AWS_REGION: process.env.REACT_APP_AWS_REGION,
-  REACT_APP_LOCALSTACK_ENDPOINT: process.env.REACT_APP_LOCALSTACK_ENDPOINT,
-  REACT_APP_COGNITO_ENDPOINT: process.env.REACT_APP_COGNITO_ENDPOINT,
-  REACT_APP_COGNITO_USER_POOL_ID: process.env.REACT_APP_COGNITO_USER_POOL_ID,
-  REACT_APP_COGNITO_CLIENT_ID: process.env.REACT_APP_COGNITO_CLIENT_ID,
-  REACT_APP_AWS_ACCESS_KEY_ID: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-  REACT_APP_AWS_SECRET_ACCESS_KEY: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+  VITE_AWS_REGION: envVar.VITE_AWS_REGION,
+  VITE_LOCALSTACK_ENDPOINT: envVar.VITE_LOCALSTACK_ENDPOINT,
+  VITE_COGNITO_ENDPOINT: envVar.VITE_COGNITO_ENDPOINT,
+  VITE_COGNITO_USER_POOL_ID: envVar.VITE_COGNITO_USER_POOL_ID,
+  VITE_COGNITO_CLIENT_ID: envVar.VITE_COGNITO_CLIENT_ID,
+  VITE_AWS_ACCESS_KEY_ID: envVar.VITE_AWS_ACCESS_KEY_ID,
+  VITE_AWS_SECRET_ACCESS_KEY: envVar.VITE_AWS_SECRET_ACCESS_KEY,
 };
 
 export enum NodeEnvEnum {
-  Development = "development",
-  Production = "production",
+  Development = "dev",
+  Production = "prod",
 }
 
-export const NODE_ENV = process.env.NODE_ENV as NodeEnvEnum;
+export const NODE_ENV = envVar.MODE as NodeEnvEnum;
 
 export const validateEnvVariables = (): void => {
   const missingEnvVars = Object.entries(AppEnv)
