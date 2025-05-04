@@ -5,7 +5,11 @@ import {
   InitiateAuthCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { AppEnv, APP_MODE, NodeEnvEnum } from "../helpers/env";
-import { writableUserAuthAtom, userAccessToken } from "../store/authAtoms";
+import {
+  writableUserAuthAtom,
+  userAccessToken,
+  userAtomKey,
+} from "../store/authAtoms";
 import { useAtom } from "jotai";
 import { useSnackbar } from "notistack";
 import { useAtomValue } from "jotai";
@@ -80,9 +84,7 @@ export const useCognitoAuth = () => {
   };
 };
 
-export const useRetrieveUserInfo = () => {
-  const accessToken = useAtomValue(userAccessToken);
-  return {
-    accessToken,
-  };
+export const getUserAccessToken = () => {
+  const accessToken = localStorage.getItem(userAtomKey);
+  return accessToken;
 };
