@@ -5,9 +5,10 @@ import {
   InitiateAuthCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { AppEnv, APP_MODE, NodeEnvEnum } from "../helpers/env";
-import { writableUserAuthAtom } from "../store/authAtoms";
+import { writableUserAuthAtom, userAccessToken } from "../store/authAtoms";
 import { useAtom } from "jotai";
 import { useSnackbar } from "notistack";
+import { useAtomValue } from "jotai";
 
 const cognitoConfig: CognitoIdentityProviderClientConfig = {
   region: AppEnv.VITE_AWS_REGION,
@@ -76,5 +77,12 @@ export const useCognitoAuth = () => {
     authenticateUser,
     handleSuccessfulLogin,
     handleChallenge,
+  };
+};
+
+export const useRetrieveUserInfo = () => {
+  const accessToken = useAtomValue(userAccessToken);
+  return {
+    accessToken,
   };
 };
