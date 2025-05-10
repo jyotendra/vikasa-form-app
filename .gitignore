@@ -2,3 +2,4 @@
 .vscode
 # volume for localstack
 volume
+dev-dist
