@@ -4,21 +4,26 @@ import {
   InitiateAuthCommand,
   InitiateAuthCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
-import { AppEnv, NODE_ENV, NodeEnvEnum } from "../helpers/env";
-import { writableUserAuthAtom } from "../store/authAtoms";
+import { AppEnv, APP_MODE, NodeEnvEnum } from "../helpers/env";
+import {
+  writableUserAuthAtom,
+  userAccessToken,
+  userAtomKey,
+} from "../store/authAtoms";
 import { useAtom } from "jotai";
 import { useSnackbar } from "notistack";
+import { useAtomValue } from "jotai";
 
 const cognitoConfig: CognitoIdentityProviderClientConfig = {
-  region: AppEnv.REACT_APP_AWS_REGION,
+  region: AppEnv.VITE_AWS_REGION,
   credentials: {
-    accessKeyId: AppEnv.REACT_APP_AWS_ACCESS_KEY_ID!,
-    secretAccessKey: AppEnv.REACT_APP_AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: AppEnv.VITE_AWS_ACCESS_KEY_ID!,
+    secretAccessKey: AppEnv.VITE_AWS_SECRET_ACCESS_KEY!,
   },
 };
 
-if (NODE_ENV === NodeEnvEnum.Development) {
-  cognitoConfig.endpoint = AppEnv.REACT_APP_COGNITO_ENDPOINT;
+if (APP_MODE === NodeEnvEnum.Development) {
+  cognitoConfig.endpoint = AppEnv.VITE_COGNITO_ENDPOINT;
 }
 
 const cognitoClient = new CognitoIdentityProviderClient(cognitoConfig);
@@ -34,7 +39,7 @@ export const useCognitoAuth = () => {
     try {
       const signInCommand = new InitiateAuthCommand({
         AuthFlow: "USER_PASSWORD_AUTH",
-        ClientId: AppEnv.REACT_APP_COGNITO_CLIENT_ID,
+        ClientId: AppEnv.VITE_COGNITO_CLIENT_ID,
         AuthParameters: {
           USERNAME: email,
           PASSWORD: password,
@@ -77,4 +82,9 @@ export const useCognitoAuth = () => {
     handleSuccessfulLogin,
     handleChallenge,
   };
+};
+
+export const getUserAccessToken = () => {
+  const accessToken = localStorage.getItem(userAtomKey);
+  return accessToken;
 };

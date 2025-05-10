@@ -2,7 +2,7 @@ import { AuthenticationResultType } from "@aws-sdk/client-cognito-identity-provi
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-const userAtomKey = "userToken";
+export const userAtomKey = "userToken";
 
 const userAuthAtom = atomWithStorage<AuthenticationResultType | null>(
   userAtomKey,

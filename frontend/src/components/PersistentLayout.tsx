@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
-import useIsMobileView from "../hooks/IsMobileView";
+import useIsMobileView from "../utils/IsMobileView";
 
 const drawerWidth = 240;
 
