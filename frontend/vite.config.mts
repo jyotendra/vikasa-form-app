@@ -42,11 +42,13 @@ const pwaOptions: Partial<VitePWAOptions> = {
     globPatterns: [
       "**/*.{js,css,html,png,jpg,jpeg,svg,woff2,woff,eot,ttf,json}",
     ],
+    injectionPoint: "self.__WB_MANIFEST",
   },
   registerType: "autoUpdate",
 };
 
 const replaceOptions = {
+  preventAssignment: true,
   __DATE__: new Date().toISOString(),
   __RELOAD_SW__: "true",
 };
