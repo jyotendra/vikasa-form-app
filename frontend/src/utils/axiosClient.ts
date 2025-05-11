@@ -10,13 +10,18 @@ interface AxiosClient {
   };
 }
 
-const getDefaultUseAxios = (props: AxiosClient) => {
+/**
+ * Creates a default axios client with the base URL set to the API URL
+ * Most of the time you need: defaultAxiosClient
+ * and should not need to create a new one
+ */
+export const getDefaulAxios = (props?: AxiosClient) => {
   const axiosConfig = {
-    baseURL: props.baseURL || import.meta.env.VITE_API_URL,
+    baseURL: props?.baseURL || import.meta.env.VITE_API_URL,
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      ...(props.headers || {}),
+      ...(props?.headers || {}),
     },
   };
 
@@ -27,8 +32,20 @@ const getDefaultUseAxios = (props: AxiosClient) => {
   return useAxios;
 };
 
-export const authedUseAxios = getDefaultUseAxios({
-  headers: {
-    Authorization: `Bearer ${getUserAccessToken()}`,
-  },
-});
+/**
+ * Creates an axios client with the base URL set to the API URL
+ * and the Authorization header set to the user access token
+ * @param props - AxiosClient
+ * @returns
+ */
+export const getAuthedAxios = (props?: AxiosClient) =>
+  getDefaulAxios({
+    ...(props || {}),
+    headers: {
+      ...props?.headers,
+      Authorization: `Bearer ${getUserAccessToken()}`,
+    },
+  });
+
+export const defaultAxiosClient = getDefaulAxios();
+export const authedAxiosClient = getAuthedAxios();
