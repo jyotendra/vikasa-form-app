@@ -18,17 +18,6 @@ const Home: React.FC = () => {
       <Typography variant="h4" align="center">
         Welcome to Home Page
       </Typography>
-      <Button
-        onClick={() => {
-          execute({
-            data: {
-              email: "test@gmail.com",
-            },
-          });
-        }}
-      >
-        Test Post
-      </Button>
     </>
   );
 };

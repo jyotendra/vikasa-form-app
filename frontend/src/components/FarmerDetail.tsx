@@ -4,7 +4,7 @@ import { Typography } from "@mui/material";
 const Home: React.FC = () => {
   return (
     <Typography variant="h4" align="center">
-      Welcome to About Page
+      Welcome to Form Page
     </Typography>
   );
 };
