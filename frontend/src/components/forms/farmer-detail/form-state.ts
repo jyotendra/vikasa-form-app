@@ -1,13 +1,14 @@
+import { atom } from "jotai";
 import { Control, UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 
-enum RelationType {
+export enum RelationType {
   WO = "w/o",
   DO = "d/o",
   SO = "s/o",
 }
 
-enum FarmCategory {
+export enum FarmCategory {
   LANDLESS = "landless",
   MARGINAL = "marginal",
   SMALL = "small",
@@ -15,7 +16,7 @@ enum FarmCategory {
   LARGE = "large",
 }
 
-enum FarmerSocialCategory {
+export enum FarmerSocialCategory {
   SC = "SC",
   ST = "ST",
   OC = "OC",
@@ -61,10 +62,5 @@ export type farmerDetailCompleteType = {
   farmerDetailForm: FarmerDetailForm;
 };
 
-export interface StepFormProps<T> {
-  stepFormState: T | null;
-  setStepFormState: React.Dispatch<React.SetStateAction<T>>;
-  formControl: Control<farmerDetailCompleteType, any>;
-  register: UseFormRegister<farmerDetailCompleteType>;
-  completeFormState: farmerDetailCompleteType;
-}
+export const basicFarmerDetailAtom = atom<basicFarmerDetailType | null>(null);
+export const farmerDetailFormAtom = atom<farmerDetailFormType | null>(null);

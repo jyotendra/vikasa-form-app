@@ -59,7 +59,7 @@ function App() {
               }
             >
               <Route path="home" element={<Home />} />
-              <Route path="farmer-detail" element={<FarmerDetail />} />
+              <Route path="farmer-detail/*" element={<FarmerDetail />} />
               {/* Fallback: any unmatched route under authenticated area redirects to /home */}
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Route>

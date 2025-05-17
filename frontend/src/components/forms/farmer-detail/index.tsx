@@ -7,10 +7,9 @@ import { Stack } from "@mui/material";
 import { Route, Routes } from "react-router";
 import { BasicFarmerDetailForm } from "./basic-details";
 import { DetailedFarmerInfoForm } from "./farmer-details";
-
-interface FarmerDetailStepperProps {
-  steps: FormContext[];
-}
+import { basicFarmerDetailType, farmerDetailCompleteType } from "./form-state";
+import { useForm } from "react-hook-form";
+import { useCallback } from "react";
 
 export interface FormContext {
   title: string;
@@ -20,15 +19,19 @@ export interface FormContext {
 const FarmerDetailStepper = () => {
   const [activeStep, setActiveStep] = useState(0);
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  const formMethods = useForm<farmerDetailCompleteType>();
 
-  const handleNext = () => (stepValidator: () => boolean) => {
-    if (stepValidator()) {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    }
-  };
+  /** form states */
+  const [basicFormState, setBasicFormState] =
+    useState<basicFarmerDetailType | null>(null);
+
+  const handleStepBack = useCallback(() => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  }, [setActiveStep]);
+
+  const handleStepNext = useCallback(() => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  }, [setActiveStep]);
 
   const handleSubmit = () => {};
 
@@ -38,7 +41,7 @@ const FarmerDetailStepper = () => {
   ];
 
   return (
-    <Stack sx={{ width: "100%" }}>
+    <Stack>
       <Stepper activeStep={activeStep}>
         {steps.map((step, index) => (
           <Step key={index}>
@@ -46,19 +49,26 @@ const FarmerDetailStepper = () => {
           </Step>
         ))}
       </Stepper>
-      <Routes>
-        <Route index element={<BasicFarmerDetailForm />} />
-        <Route path="farmer-detail" element={<DetailedFarmerInfoForm />} />
-      </Routes>
-      <Stack direction="row">
-        <Button onClick={handleBack} disabled={activeStep === 0}>
-          Back
-        </Button>
-        {activeStep === steps.length - 1 ? (
-          <Button onClick={handleSubmit}>Submit</Button>
-        ) : (
-          <Button onClick={handleNext}>Next</Button>
-        )}
+      <Stack direction="column" sx={{ mt: 8, width: "100%" }}>
+        <Routes>
+          <Route
+            path=""
+            element={<BasicFarmerDetailForm stepNext={handleStepNext} />}
+          />
+          <Route
+            path="step1"
+            element={<BasicFarmerDetailForm stepNext={handleStepNext} />}
+          />
+          <Route
+            path="step2"
+            element={
+              <DetailedFarmerInfoForm
+                stepBack={handleStepBack}
+                stepNext={handleStepNext}
+              />
+            }
+          />
+        </Routes>
       </Stack>
     </Stack>
   );
