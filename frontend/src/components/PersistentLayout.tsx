@@ -45,7 +45,7 @@ const PersistentLayout: React.FC = () => {
         </ListItemButton>
         <ListItemButton
           component={RouterLink}
-          to="/about"
+          to="/farmer-detail"
           onClick={handleNavClick}
         >
           <ListItemText primary="About" />
