@@ -45,7 +45,7 @@ export const Step3 = (props: DetailedFarmerInfoFormProps) => {
     if (props.stepNext) {
       props.stepNext();
     }
-    navigate("/farmer-detail");
+    navigate("/form/farmer-detail");
   };
 
   const handleBack = () => {

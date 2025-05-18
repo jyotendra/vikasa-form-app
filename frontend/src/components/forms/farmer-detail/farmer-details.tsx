@@ -56,7 +56,7 @@ export const DetailedFarmerInfoForm = (props: DetailedFarmerInfoFormProps) => {
   const handleBack = () => {
     setFormData(getFormValues());
     props.stepBack();
-    navigate("../step1");
+    navigate("../step1", { state: { steppedBack: true } });
   };
 
   return (

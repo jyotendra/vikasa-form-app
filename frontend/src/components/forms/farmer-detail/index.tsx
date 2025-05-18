@@ -2,9 +2,9 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
-import { Navigate, Route, Routes } from "react-router";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 import { BasicFarmerDetailForm } from "./basic-details";
 import { DetailedFarmerInfoForm } from "./farmer-details";
 import {
@@ -24,8 +24,6 @@ export interface FormContext {
 const FarmerDetailStepper = () => {
   const [activeStep, setActiveStep] = useState(0);
 
-  const formMethods = useForm<farmerDetailCompleteType>();
-
   /** form states */
   const [basicFormState, setBasicFormState] =
     useState<basicFarmerDetailType | null>(null);
@@ -40,6 +38,17 @@ const FarmerDetailStepper = () => {
   const handleStepNext = useCallback(() => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }, [setActiveStep]);
+
+  const location = useLocation();
+  const steppedBack = location.state?.steppedBack || false;
+
+  useEffect(() => {
+    if (!steppedBack) {
+      // reset all form states
+      setBasicFormState(null);
+      setDetailedFarmerFormState(null);
+    }
+  }, [steppedBack]);
 
   const handleSubmit = () => {};
 
