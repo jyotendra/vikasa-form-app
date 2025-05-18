@@ -9,6 +9,7 @@ import {
   FarmCategory,
   FarmerSocialCategory,
   farmerDetailFormAtom,
+  farmerDetailFormType,
 } from "./form-state"; // Assuming form-state.ts contains these
 
 // Create type from schema
@@ -17,10 +18,14 @@ export type FarmerDetailFormType = z.infer<typeof farmerDetailFormSchema>;
 interface DetailedFarmerInfoFormProps {
   stepBack: () => void;
   stepNext: () => void;
+  formData: farmerDetailFormType | null;
+  setFormData: React.Dispatch<
+    React.SetStateAction<farmerDetailFormType | null>
+  >;
 }
 
 export const DetailedFarmerInfoForm = (props: DetailedFarmerInfoFormProps) => {
-  const [formData, setFormData] = useAtom(farmerDetailFormAtom);
+  const { formData, setFormData } = props;
 
   const {
     register,

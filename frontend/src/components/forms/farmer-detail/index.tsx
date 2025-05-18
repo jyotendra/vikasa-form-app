@@ -7,7 +7,11 @@ import { Stack } from "@mui/material";
 import { Navigate, Route, Routes } from "react-router";
 import { BasicFarmerDetailForm } from "./basic-details";
 import { DetailedFarmerInfoForm } from "./farmer-details";
-import { basicFarmerDetailType, farmerDetailCompleteType } from "./form-state";
+import {
+  basicFarmerDetailType,
+  farmerDetailCompleteType,
+  farmerDetailFormType,
+} from "./form-state";
 import { useForm } from "react-hook-form";
 import { useCallback } from "react";
 import { Step3 } from "./step3";
@@ -25,6 +29,9 @@ const FarmerDetailStepper = () => {
   /** form states */
   const [basicFormState, setBasicFormState] =
     useState<basicFarmerDetailType | null>(null);
+
+  const [detailedFarmerFormState, setDetailedFarmerFormState] =
+    useState<farmerDetailFormType | null>(null);
 
   const handleStepBack = useCallback(() => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -56,7 +63,13 @@ const FarmerDetailStepper = () => {
             <Route path="" element={<Navigate to="step1" replace />} />
             <Route
               path="step1"
-              element={<BasicFarmerDetailForm stepNext={handleStepNext} />}
+              element={
+                <BasicFarmerDetailForm
+                  stepNext={handleStepNext}
+                  formData={basicFormState}
+                  setFormData={setBasicFormState}
+                />
+              }
             />
             <Route
               path="step2"
@@ -64,6 +77,8 @@ const FarmerDetailStepper = () => {
                 <DetailedFarmerInfoForm
                   stepBack={handleStepBack}
                   stepNext={handleStepNext}
+                  formData={detailedFarmerFormState}
+                  setFormData={setDetailedFarmerFormState}
                 />
               }
             />

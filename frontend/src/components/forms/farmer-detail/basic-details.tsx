@@ -7,16 +7,18 @@ import {
   basicFarmerDetailType,
   RelationType,
 } from "./form-state";
-import { useAtom } from "jotai";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface BasicFarmerDetailFormProps {
   stepNext: () => void;
+  formData: basicFarmerDetailType | null;
+  setFormData: React.Dispatch<
+    React.SetStateAction<basicFarmerDetailType | null>
+  >;
 }
 
 export const BasicFarmerDetailForm = (props: BasicFarmerDetailFormProps) => {
-  const { stepNext } = props;
-  const [formState, setFormState] = useAtom(basicFarmerDetailAtom);
+  const { formData, setFormData, stepNext } = props;
 
   const {
     register,
@@ -25,12 +27,12 @@ export const BasicFarmerDetailForm = (props: BasicFarmerDetailFormProps) => {
     formState: { errors: formErrors },
   } = useForm<basicFarmerDetailType>({
     defaultValues: {
-      farmerName: formState?.farmerName || "",
-      relationType: formState?.relationType || RelationType.SO,
-      relationName: formState?.relationName || "",
-      cluster: formState?.cluster || "",
-      village: formState?.village || "",
-      mobileNumber: formState?.mobileNumber || "",
+      farmerName: formData?.farmerName || "",
+      relationType: formData?.relationType || RelationType.SO,
+      relationName: formData?.relationName || "",
+      cluster: formData?.cluster || "",
+      village: formData?.village || "",
+      mobileNumber: formData?.mobileNumber || "",
     },
     resolver: zodResolver(basicFarmerDetailsSchema),
   });
@@ -38,7 +40,7 @@ export const BasicFarmerDetailForm = (props: BasicFarmerDetailFormProps) => {
   let navigate = useNavigate();
 
   const onSubmit = (data: any) => {
-    setFormState(data);
+    setFormData(data);
     stepNext();
     navigate("../step2");
   };
