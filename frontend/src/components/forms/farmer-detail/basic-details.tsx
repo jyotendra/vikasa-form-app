@@ -7,7 +7,7 @@ import {
   basicFarmerDetailType,
   RelationType,
 } from "./form-state";
-import { useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface BasicFarmerDetailFormProps {
@@ -16,7 +16,7 @@ interface BasicFarmerDetailFormProps {
 
 export const BasicFarmerDetailForm = (props: BasicFarmerDetailFormProps) => {
   const { stepNext } = props;
-  const setFormState = useSetAtom(basicFarmerDetailAtom);
+  const [formState, setFormState] = useAtom(basicFarmerDetailAtom);
 
   const {
     register,
@@ -25,12 +25,12 @@ export const BasicFarmerDetailForm = (props: BasicFarmerDetailFormProps) => {
     formState: { errors: formErrors },
   } = useForm<basicFarmerDetailType>({
     defaultValues: {
-      farmerName: "",
-      relationType: RelationType.SO,
-      relationName: "",
-      cluster: "",
-      village: "",
-      mobileNumber: "",
+      farmerName: formState?.farmerName || "",
+      relationType: formState?.relationType || RelationType.SO,
+      relationName: formState?.relationName || "",
+      cluster: formState?.cluster || "",
+      village: formState?.village || "",
+      mobileNumber: formState?.mobileNumber || "",
     },
     resolver: zodResolver(basicFarmerDetailsSchema),
   });

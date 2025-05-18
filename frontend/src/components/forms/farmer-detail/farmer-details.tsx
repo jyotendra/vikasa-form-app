@@ -3,8 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSetAtom } from "jotai";
-import { atom } from "jotai";
+import { useAtom } from "jotai";
 import {
   farmerDetailFormSchema,
   FarmCategory,
@@ -21,19 +20,21 @@ interface DetailedFarmerInfoFormProps {
 }
 
 export const DetailedFarmerInfoForm = (props: DetailedFarmerInfoFormProps) => {
-  const setFormState = useSetAtom(farmerDetailFormAtom);
+  const [formData, setFormData] = useAtom(farmerDetailFormAtom);
 
   const {
     register,
     handleSubmit,
     control,
     formState: { errors: formErrors },
+    getValues: getFormValues,
   } = useForm<FarmerDetailFormType>({
     defaultValues: {
-      farmCategory: FarmCategory.SMALL,
-      farmerSocialCategory: FarmerSocialCategory.OC,
-      totalFamilyMembers: 1,
-      totalMaleMembers: 0,
+      farmCategory: formData?.farmCategory || FarmCategory.SMALL,
+      farmerSocialCategory:
+        formData?.farmerSocialCategory || FarmerSocialCategory.OC,
+      totalFamilyMembers: formData?.totalFamilyMembers || 1,
+      totalMaleMembers: formData?.totalMaleMembers || 0,
     },
     resolver: zodResolver(farmerDetailFormSchema),
   });
@@ -41,7 +42,7 @@ export const DetailedFarmerInfoForm = (props: DetailedFarmerInfoFormProps) => {
   let navigate = useNavigate();
 
   const onSubmit = (data: FarmerDetailFormType) => {
-    setFormState(data);
+    setFormData(data);
     if (props.stepNext) {
       props.stepNext();
     }
@@ -49,6 +50,7 @@ export const DetailedFarmerInfoForm = (props: DetailedFarmerInfoFormProps) => {
   };
 
   const handleBack = () => {
+    setFormData(getFormValues());
     props.stepBack();
     navigate("../step1");
   };

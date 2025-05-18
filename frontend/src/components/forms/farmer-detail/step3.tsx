@@ -45,12 +45,12 @@ export const Step3 = (props: DetailedFarmerInfoFormProps) => {
     if (props.stepNext) {
       props.stepNext();
     }
-    navigate("step2");
+    navigate("/farmer-detail");
   };
 
   const handleBack = () => {
     props.stepBack();
-    navigate("step2");
+    navigate("../step2");
   };
 
   return (
