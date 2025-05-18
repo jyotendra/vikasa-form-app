@@ -4,12 +4,13 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import { Stack } from "@mui/material";
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import { BasicFarmerDetailForm } from "./basic-details";
 import { DetailedFarmerInfoForm } from "./farmer-details";
 import { basicFarmerDetailType, farmerDetailCompleteType } from "./form-state";
 import { useForm } from "react-hook-form";
 import { useCallback } from "react";
+import { Step3 } from "./step3";
 
 export interface FormContext {
   title: string;
@@ -51,23 +52,28 @@ const FarmerDetailStepper = () => {
       </Stepper>
       <Stack direction="column" sx={{ mt: 8, width: "100%" }}>
         <Routes>
-          <Route
-            path=""
-            element={<BasicFarmerDetailForm stepNext={handleStepNext} />}
-          />
-          <Route
-            path="step1"
-            element={<BasicFarmerDetailForm stepNext={handleStepNext} />}
-          />
-          <Route
-            path="step2"
-            element={
-              <DetailedFarmerInfoForm
-                stepBack={handleStepBack}
-                stepNext={handleStepNext}
-              />
-            }
-          />
+          <Route path="">
+            <Route path="" element={<Navigate to="step1" replace />} />
+            <Route
+              path="step1"
+              element={<BasicFarmerDetailForm stepNext={handleStepNext} />}
+            />
+            <Route
+              path="step2"
+              element={
+                <DetailedFarmerInfoForm
+                  stepBack={handleStepBack}
+                  stepNext={handleStepNext}
+                />
+              }
+            />
+            <Route
+              path="step3"
+              element={
+                <Step3 stepBack={handleStepBack} stepNext={handleStepNext} />
+              }
+            />
+          </Route>
         </Routes>
       </Stack>
     </Stack>

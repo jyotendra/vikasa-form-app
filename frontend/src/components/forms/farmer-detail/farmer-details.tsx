@@ -12,8 +12,6 @@ import {
   farmerDetailFormAtom,
 } from "./form-state"; // Assuming form-state.ts contains these
 
-
-
 // Create type from schema
 export type FarmerDetailFormType = z.infer<typeof farmerDetailFormSchema>;
 
@@ -47,12 +45,12 @@ export const DetailedFarmerInfoForm = (props: DetailedFarmerInfoFormProps) => {
     if (props.stepNext) {
       props.stepNext();
     }
-    navigate("/step2");
+    navigate("../step3");
   };
 
   const handleBack = () => {
     props.stepBack();
-    navigate("/step1");
+    navigate("../step1");
   };
 
   return (

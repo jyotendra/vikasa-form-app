@@ -39,8 +39,8 @@ export const BasicFarmerDetailForm = (props: BasicFarmerDetailFormProps) => {
 
   const onSubmit = (data: any) => {
     setFormState(data);
-    // stepNext();
-    navigate("step2");
+    stepNext();
+    navigate("../step2");
   };
 
   return (
