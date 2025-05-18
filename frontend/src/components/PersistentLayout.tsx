@@ -12,10 +12,16 @@ import {
   CssBaseline,
   Box,
   Container,
+  Collapse,
+  ListItemIcon,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import useIsMobileView from "../utils/IsMobileView";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import StarBorder from "@mui/icons-material/StarBorder";
+import AppForms from "./forms";
 
 const drawerWidth = 240;
 
@@ -23,6 +29,7 @@ const PersistentLayout: React.FC = () => {
   const theme = useTheme();
   const isMobile = useIsMobileView();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [formSectionOpen, setFormSectionOpen] = React.useState(false);
 
   const handleDrawerToggle = () => setMobileOpen((prev) => !prev);
 
@@ -30,6 +37,10 @@ const PersistentLayout: React.FC = () => {
     if (isMobile) {
       setMobileOpen(false);
     }
+  };
+
+  const handleFormCollapse = () => {
+    setFormSectionOpen((prev) => !prev);
   };
 
   const drawer = (
@@ -43,13 +54,22 @@ const PersistentLayout: React.FC = () => {
         >
           <ListItemText primary="Home" />
         </ListItemButton>
-        <ListItemButton
-          component={RouterLink}
-          to="/farmer-detail"
-          onClick={handleNavClick}
-        >
-          <ListItemText primary="About" />
+        <ListItemButton onClick={handleFormCollapse}>
+          <ListItemText primary="Forms" />
+          {formSectionOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
+        <Collapse in={formSectionOpen} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              component={RouterLink}
+              to="/form/farmer-detail"
+              onClick={handleNavClick}
+            >
+              <ListItemText primary="Farmer Detail" />
+            </ListItemButton>
+          </List>
+        </Collapse>
         {/* Add more routes here if needed */}
       </List>
     </Box>

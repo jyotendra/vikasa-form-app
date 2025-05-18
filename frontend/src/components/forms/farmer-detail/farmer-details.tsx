@@ -3,7 +3,6 @@ import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAtom } from "jotai";
 import {
   farmerDetailFormSchema,
   FarmCategory,

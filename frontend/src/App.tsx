@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { useEffect } from "react";
 import { validateEnvVariables } from "./helpers/env";
 import { SnackbarProvider } from "notistack";
+import AppForms from "./components/forms";
 
 const theme = createTheme({
   components: {
@@ -59,7 +60,7 @@ function App() {
               }
             >
               <Route path="home" element={<Home />} />
-              <Route path="farmer-detail/*" element={<FarmerDetail />} />
+              <Route path="form/*" element={<AppForms />} />
               {/* Fallback: any unmatched route under authenticated area redirects to /home */}
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Route>
