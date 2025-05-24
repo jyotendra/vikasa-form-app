@@ -59,7 +59,7 @@ export type farmerDetailFormType = z.infer<typeof farmerDetailFormSchema>;
 
 export type farmerDetailCompleteType = {
   basicFarmerDetails: basicFarmerDetailType;
-  farmerDetailForm: FarmerDetailForm;
+  detailedFarmerInfo: FarmerDetailForm;
 };
 
 export const basicFarmerDetailAtom = atom<basicFarmerDetailType | null>(null);

@@ -10,6 +10,7 @@ import {
   FarmCategory,
   FarmerSocialCategory,
   farmerDetailFormAtom,
+  farmerDetailCompleteType,
 } from "./form-state"; // Assuming form-state.ts contains these
 
 // Create type from schema
@@ -17,60 +18,59 @@ export type FarmerDetailFormType = z.infer<typeof farmerDetailFormSchema>;
 
 interface DetailedFarmerInfoFormProps {
   stepBack: () => void;
-  stepNext: () => void;
+  finalFormData: farmerDetailCompleteType;
 }
 
-export const Step3 = (props: DetailedFarmerInfoFormProps) => {
-  const setFormState = useSetAtom(farmerDetailFormAtom);
-
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors: formErrors },
-  } = useForm<FarmerDetailFormType>({
-    defaultValues: {
-      farmCategory: FarmCategory.SMALL,
-      farmerSocialCategory: FarmerSocialCategory.OC,
-      totalFamilyMembers: 1,
-      totalMaleMembers: 0,
-    },
-    resolver: zodResolver(farmerDetailFormSchema),
-  });
-
+export const PreviewAndSubmit = (props: DetailedFarmerInfoFormProps) => {
+  const { finalFormData, stepBack } = props;
   let navigate = useNavigate();
 
-  const onSubmit = (data: FarmerDetailFormType) => {
-    setFormState(data);
-    if (props.stepNext) {
-      props.stepNext();
-    }
-    navigate("/form/farmer-detail");
-  };
-
   const handleBack = () => {
-    props.stepBack();
+    stepBack();
     navigate("../step2");
   };
 
+  const handleSubmit = () => {
+    // Here you would typically send the finalFormData to your backend
+    console.log("Submitting form data:", finalFormData);
+    // After submission, you might want to navigate to a success page or reset the form
+    navigate("/form/farmer-detail", {
+      replace: true,
+      state: { remount: Date.now() },
+    });
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack direction="column" spacing={2} sx={{ width: "100%" }}>
-        <TextField label="Just for test" />
+    <Stack direction="column" spacing={2} sx={{ width: "100%" }}>
+      <h2>Preview and Submit</h2>
 
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={handleBack}
-          sx={{ marginRight: 2 }}
-        >
-          Back
-        </Button>
+      <TextField
+        label="Form Data Preview"
+        value={JSON.stringify(finalFormData, null, 2)}
+        multiline
+        minRows={8}
+        fullWidth
+        disabled
+        variant="outlined"
+      />
 
-        <Button type="submit" variant="contained" color="primary">
-          Next
-        </Button>
-      </Stack>
-    </form>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={handleBack}
+        sx={{ marginRight: 2 }}
+      >
+        Back
+      </Button>
+
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+      >
+        Submit
+      </Button>
+    </Stack>
   );
 };

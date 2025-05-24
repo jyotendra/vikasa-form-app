@@ -2,7 +2,7 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Stack } from "@mui/material";
 import { Navigate, Route, Routes, useLocation } from "react-router";
 import { BasicFarmerDetailForm } from "./basic-details";
@@ -12,9 +12,8 @@ import {
   farmerDetailCompleteType,
   farmerDetailFormType,
 } from "./form-state";
-import { useForm } from "react-hook-form";
 import { useCallback } from "react";
-import { Step3 } from "./step3";
+import { PreviewAndSubmit } from "./step3";
 
 export interface FormContext {
   title: string;
@@ -39,18 +38,25 @@ const FarmerDetailStepper = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }, [setActiveStep]);
 
+  const finalFormState = useMemo<farmerDetailCompleteType>(() => {
+    return {
+      basicFarmerDetails: basicFormState!,
+      detailedFarmerInfo: detailedFarmerFormState!,
+    };
+  }, [basicFormState, detailedFarmerFormState]);
+
   const location = useLocation();
-  const steppedBack = location.state?.steppedBack || false;
 
   useEffect(() => {
-    if (!steppedBack) {
+    const { remount } = location.state || {};
+    if (remount) {
+      console.log("Renewing form state");
       // reset all form states
       setBasicFormState(null);
       setDetailedFarmerFormState(null);
+      setActiveStep(0);
     }
-  }, [steppedBack]);
-
-  const handleSubmit = () => {};
+  }, [location.state]);
 
   const steps: FormContext[] = [
     { title: "Basic Farmer Details", path: "basic-farmer-detail" },
@@ -94,7 +100,10 @@ const FarmerDetailStepper = () => {
             <Route
               path="step3"
               element={
-                <Step3 stepBack={handleStepBack} stepNext={handleStepNext} />
+                <PreviewAndSubmit
+                  stepBack={handleStepBack}
+                  finalFormData={finalFormState}
+                />
               }
             />
           </Route>
