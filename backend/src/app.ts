@@ -2,6 +2,7 @@ import { join } from "node:path";
 import AutoLoad, { AutoloadPluginOptions } from "@fastify/autoload";
 import { FastifyPluginAsync, FastifyServerOptions } from "fastify";
 import appEnvConfig, { AppEnv, isDevelopment } from "./env-loader";
+import cors from "@fastify/cors";
 
 interface AwsOptions {
   region: string;
@@ -47,6 +48,29 @@ const app: FastifyPluginAsync<AppOptions> = async (
   // through your application
 
   const options = { ...appOptions, ...opts };
+
+  void fastify.register(cors, {
+    origin: (origin, cb) => {
+      // Allow requests from all origins in development mode
+      if (isDevelopment || !origin) {
+        cb(null, true);
+      } else if (isDevelopment && origin.includes("localhost")) {
+        // Allow localhost in development mode
+        cb(null, true);
+      } else {
+        // In production, you can restrict origins as needed
+        const allowedOrigins = [
+          "https://your-production-domain.com",
+          "http://localhost:3000", // Example for local development
+        ];
+        if (allowedOrigins.includes(origin)) {
+          cb(null, true);
+        } else {
+          cb(new Error("Not allowed by CORS"), false);
+        }
+      }
+    },
+  });
 
   void fastify.register(AutoLoad, {
     dir: join(__dirname, "plugins"),

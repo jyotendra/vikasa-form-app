@@ -12,6 +12,7 @@ import {
   farmerDetailFormAtom,
   farmerDetailCompleteType,
 } from "./form-state"; // Assuming form-state.ts contains these
+import { useAuthedAxiosClient } from "../../../utils/axiosClient";
 
 // Create type from schema
 export type FarmerDetailFormType = z.infer<typeof farmerDetailFormSchema>;
@@ -22,6 +23,16 @@ interface DetailedFarmerInfoFormProps {
 }
 
 export const PreviewAndSubmit = (props: DetailedFarmerInfoFormProps) => {
+  const [{ data: formSubmitResp, loading, error }, executePost] =
+    useAuthedAxiosClient(
+      {
+        url: "form/farmer-detail",
+        method: "post",
+      },
+      {
+        manual: true,
+      }
+    );
   const { finalFormData, stepBack } = props;
   let navigate = useNavigate();
 
@@ -33,6 +44,16 @@ export const PreviewAndSubmit = (props: DetailedFarmerInfoFormProps) => {
   const handleSubmit = () => {
     // Here you would typically send the finalFormData to your backend
     console.log("Submitting form data:", finalFormData);
+    executePost({
+      data: finalFormData,
+    })
+      .then((response) => {
+        console.log("Form submitted successfully:", response.data);
+      })
+      .catch((err) => {
+        console.error("Error submitting form:", err);
+      });
+
     // After submission, you might want to navigate to a success page or reset the form
     navigate("/form/farmer-detail", {
       replace: true,
