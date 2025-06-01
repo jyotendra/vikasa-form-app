@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Typography } from "@mui/material";
-import { defaultAxiosClient } from "../utils/axiosClient";
+import { useDefaultAxiosClient } from "../utils/axiosClient";
 
 const Home: React.FC = () => {
   // TODO: added for testing, refactor
   // https://www.npmjs.com/package/axios-hooks#user-content-manual-requests
-  const [{ data, loading, error }, execute] = defaultAxiosClient(
+  const [{ data, loading, error }, execute] = useDefaultAxiosClient(
     {
       url: "/create-users",
       method: "POST",

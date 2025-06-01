@@ -1,6 +1,7 @@
 import axios, { CreateAxiosDefaults } from "axios";
 import { makeUseAxios } from "axios-hooks";
 import { getUserAccessToken } from "./auth";
+import { AppEnv } from "../helpers/env";
 
 interface AxiosClient {
   baseURL?: string;
@@ -17,7 +18,7 @@ interface AxiosClient {
  */
 export const getDefaulAxios = (props?: AxiosClient) => {
   const axiosConfig = {
-    baseURL: props?.baseURL || import.meta.env.VITE_API_URL,
+    baseURL: props?.baseURL || AppEnv.VITE_API_URL,
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -47,5 +48,5 @@ export const getAuthedAxios = (props?: AxiosClient) =>
     },
   });
 
-export const defaultAxiosClient = getDefaulAxios();
-export const authedAxiosClient = getAuthedAxios();
+export const useDefaultAxiosClient = getDefaulAxios();
+export const useAuthedAxiosClient = getAuthedAxios();

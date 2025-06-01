@@ -3,11 +3,12 @@ import { Login } from "./components/Login";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import PersistentLayout from "./components/PersistentLayout";
 import Home from "./components/Home";
-import About from "./components/About";
+import FarmerDetail from "./components/forms/farmer-detail";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useEffect } from "react";
 import { validateEnvVariables } from "./helpers/env";
 import { SnackbarProvider } from "notistack";
+import AppForms from "./components/forms";
 
 const theme = createTheme({
   components: {
@@ -59,7 +60,7 @@ function App() {
               }
             >
               <Route path="home" element={<Home />} />
-              <Route path="about" element={<About />} />
+              <Route path="form/*" element={<AppForms />} />
               {/* Fallback: any unmatched route under authenticated area redirects to /home */}
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Route>
