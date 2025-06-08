@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'User Management System with DynamoDB'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment name
+
+
+Resources:
+  UserAndFormManagementTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'UserNFormManagement-${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        # Main table keys
+        - AttributeName: PK # shall be using vertical partitioning
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+
+        # 
