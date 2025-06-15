@@ -1,0 +1,218 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "DynamoDB table for user profiles, targets, and form submissions",
+
+  "Resources": {
+    "UserTargetFormTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "UserTargetFormTable",
+        "BillingMode": "PAY_PER_REQUEST",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "PK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "email",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "created_by",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "mobile_number",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "target_identifier",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "gsi1_sk_form_update_at",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "aadhar_number",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "PK",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "SK",
+            "KeyType": "RANGE"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "GSI1-UserEmail-Index",
+            "KeySchema": [
+              {
+                "AttributeName": "email",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "GSI1-UserFormSubmissions-Index",
+            "KeySchema": [
+              {
+                "AttributeName": "created_by",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "gsi1_sk_form_update_at",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "GSI2-Mobile-Index",
+            "KeySchema": [
+              {
+                "AttributeName": "mobile_number",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "GSI2-TargetFormSubmissions-Index",
+            "KeySchema": [
+              {
+                "AttributeName": "target_identifier",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "gsi1_sk_form_update_at",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "GSI3-TargetAadhar-Index",
+            "KeySchema": [
+              {
+                "AttributeName": "aadhar_number",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        },
+        "SSESpecification": {
+          "SSEEnabled": true
+        },
+        "Tags": [
+          {
+            "Key": "Environment",
+            "Value": {
+              "Ref": "AWS::StackName"
+            }
+          },
+          {
+            "Key": "Application",
+            "Value": "UserTargetFormSystem"
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "TableName": {
+      "Description": "Name of the created DynamoDB table",
+      "Value": {
+        "Ref": "UserTargetFormTable"
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-TableName"
+        }
+      }
+    },
+    "TableArn": {
+      "Description": "ARN of the created DynamoDB table",
+      "Value": {
+        "Fn::GetAtt": [
+          "UserTargetFormTable",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-TableArn"
+        }
+      }
+    },
+    "GSI1UserEmailIndex": {
+      "Description": "GSI1 User Email Index name",
+      "Value": "GSI1-UserEmail-Index",
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-GSI1-UserEmail"
+        }
+      }
+    },
+    "GSI1UserFormSubmissionsIndex": {
+      "Description": "GSI1 User Form Submissions Index name",
+      "Value": "GSI1-UserFormSubmissions-Index",
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-GSI1-UserFormSubmissions"
+        }
+      }
+    },
+    "GSI2MobileIndex": {
+      "Description": "GSI2 Mobile Index name",
+      "Value": "GSI2-Mobile-Index",
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-GSI2-Mobile"
+        }
+      }
+    },
+    "GSI2TargetFormSubmissionsIndex": {
+      "Description": "GSI2 Target Form Submissions Index name",
+      "Value": "GSI2-TargetFormSubmissions-Index",
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-GSI2-TargetFormSubmissions"
+        }
+      }
+    },
+    "GSI3TargetAadharIndex": {
+      "Description": "GSI3 Target Aadhar Index name",
+      "Value": "GSI3-TargetAadhar-Index",
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-GSI3-TargetAadhar"
+        }
+      }
+    }
+  }
+}
