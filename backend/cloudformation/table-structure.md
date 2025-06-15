@@ -98,22 +98,23 @@ Single table to store both user information and the form submitted by them.
 
 3.1. Form Submission
 - **PK**:
-  - `FORM#<form_type>`: Represents a form submission.
+  - `FORM_SUBMISSION#<form_type>#<user_name>`: Represents a form submission.
 - **SK**:
-    - `SUBMISSION#<created_at>#<user_name>`: Unique identifier for each form submission.
+    - `<created_at>`: Unique identifier for each form submission.
 - Attributes:
     - `user_name`: cognito_user_sub of the user who submitted the form. (the app user)
     - `gsi1_sk_form_update_at`: Represents the type of form submitted and the timestamp of submission. Format: `FORM#<form_type>#<updated_at>`.
-    - `target_type`: Type of the target (e.g., farmer, organization). Will be used to fill USER_TYPE.
     - `target_identifier`: identifier for the target of the form (e.g., farmer's mobile number).
     - `form_type`: Type of the form submitted (e.g., registration, feedback).
     - `form_data`: JSON object containing the form data.
+    - `created_by`: User who created the form submission (Cognito user sub).
+    - `updated_by`: User who last updated the form submission (Cognito user sub).
     - `created_at`: Timestamp of when the form was submitted.
     - `updated_at`: Timestamp of the last update to the form submission.
 
 3.2. All User Form Submissions
 - **GSI1_PK_user_id**:
-  - `<user_name>`: Represents user-name, who submitted the form.
+  - `<updated_by>`: Represents user-name, who updated the form last.
 - **GSI1_SK_form_submission_time**:
     - `<gsi1_sk_form_submission_time>`: Represents the type of form submitted and the timestamp of submission. Format: `FORM#<form_type>#<updated_at>`.
 - Attributes:
