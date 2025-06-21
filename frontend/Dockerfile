@@ -1,4 +1,4 @@
-FROM node:20.19.0-alpine3.21 AS build
+FROM node:lts-bookworm AS build
 
 WORKDIR /app
 
@@ -10,11 +10,11 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx
+FROM nginx:alpine
 
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 
