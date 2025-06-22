@@ -3,3 +3,4 @@
 # volume for localstack
 volume
 dev-dist
+.DS_Store
