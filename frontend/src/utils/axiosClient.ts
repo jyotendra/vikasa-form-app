@@ -39,14 +39,42 @@ export const getDefaulAxios = (props?: AxiosClient) => {
  * @param props - AxiosClient
  * @returns
  */
-export const getAuthedAxios = (props?: AxiosClient) =>
-  getDefaulAxios({
-    ...(props || {}),
+export const getAuthedAxios = (props?: AxiosClient) => {
+  const axiosConfig = {
+    baseURL: props?.baseURL || AppEnv.VITE_API_URL,
     headers: {
-      ...props?.headers,
-      Authorization: `Bearer ${getUserAccessToken()}`,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(props?.headers || {}),
     },
+  };
+
+  const axiosInstance = axios.create(axiosConfig);
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      const accessToken = getUserAccessToken(); // its important to get the access token via interceptor
+      // because otherwise, if called directly in top-level code,
+      // it will not have the latest access token if it was refreshed
+      if (accessToken) {
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
+      } else {
+        throw new Error(
+          "No access token found for requests for authenticated routes"
+        );
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
+  const useAxios = makeUseAxios({
+    axios: axiosInstance,
   });
+
+  return useAxios;
+};
 
 export const useDefaultAxiosClient = getDefaulAxios();
 export const useAuthedAxiosClient = getAuthedAxios();
