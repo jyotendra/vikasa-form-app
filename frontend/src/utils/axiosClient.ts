@@ -1,7 +1,8 @@
 import axios, { CreateAxiosDefaults } from "axios";
 import { makeUseAxios } from "axios-hooks";
-import { getUserAccessToken } from "./auth";
+import { clearUserAuth, getUserAccessToken } from "./auth";
 import { AppEnv } from "../helpers/env";
+import { enqueueSnackbar } from "notistack";
 
 interface AxiosClient {
   baseURL?: string;
@@ -65,6 +66,26 @@ export const getAuthedAxios = (props?: AxiosClient) => {
       return config;
     },
     (error) => {
+      return Promise.reject(error);
+    }
+  );
+
+  axiosInstance.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error.response && error.response.status === 401) {
+        // Handle unauthorized access, e.g., redirect to login or show a message
+        enqueueSnackbar("Unauthorized access - please log in again.", {
+          variant: "error",
+          autoHideDuration: 9000,
+        });
+        clearUserAuth();
+      } else {
+        // Handle other errors
+        console.error("An error occurred:", error);
+      }
       return Promise.reject(error);
     }
   );

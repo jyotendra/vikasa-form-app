@@ -35,7 +35,7 @@ const authedRoutesMiddleware: FastifyPluginAsync = async (fastify) => {
       fastify.log.info(`User authenticated: ${request.userCognitoSub}`);
     } catch (err) {
       fastify.log.error(err, "Token verification failed");
-      reply.status(403).send({ error: "Forbidden" });
+      reply.status(401).send({ error: "Unauthorized" });
       return;
     }
 

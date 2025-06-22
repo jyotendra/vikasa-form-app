@@ -9,6 +9,7 @@ import { AppEnv, APP_MODE, NodeEnvEnum } from "../helpers/env";
 import { writableUserAuthAtom, userAtomKey } from "../store/authAtoms";
 import { useAtom } from "jotai";
 import { useSnackbar } from "notistack";
+import { globalAppStore } from "../store/globalStore";
 
 const cognitoConfig: CognitoIdentityProviderClientConfig = {
   region: AppEnv.VITE_AWS_REGION,
@@ -99,4 +100,8 @@ export const getUserAccessToken = () => {
     return storedAuthResult.AccessToken;
   }
   return null;
+};
+
+export const clearUserAuth = () => {
+  globalAppStore.set(writableUserAuthAtom, null);
 };

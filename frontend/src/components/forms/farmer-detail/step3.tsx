@@ -48,17 +48,17 @@ export const PreviewAndSubmit = (props: DetailedFarmerInfoFormProps) => {
       data: finalFormData,
     })
       .then((response) => {
-        console.log("Form submitted successfully:", response.data);
+        console.log("Form submitted successfully:", response);
       })
       .catch((err) => {
         console.error("Error submitting form:", err);
+      })
+      .finally(() => {
+        navigate("/form/farmer-detail", {
+          replace: true,
+          state: { remount: Date.now() },
+        });
       });
-
-    // After submission, you might want to navigate to a success page or reset the form
-    navigate("/form/farmer-detail", {
-      replace: true,
-      state: { remount: Date.now() },
-    });
   };
 
   return (

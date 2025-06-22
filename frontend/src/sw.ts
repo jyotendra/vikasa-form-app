@@ -30,6 +30,10 @@ self.addEventListener("fetch", (event) => {
       const response = await fetch(event.request.clone());
       return response;
     } catch (error) {
+      console.error(
+        "Network request failed, queuing for background sync:",
+        error
+      );
       await queue.pushRequest({ request: event.request });
       return new Response(
         JSON.stringify({
