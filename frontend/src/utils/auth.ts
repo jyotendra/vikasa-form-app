@@ -1,18 +1,14 @@
 import {
+  AuthenticationResultType,
   CognitoIdentityProviderClient,
   CognitoIdentityProviderClientConfig,
   InitiateAuthCommand,
   InitiateAuthCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { AppEnv, APP_MODE, NodeEnvEnum } from "../helpers/env";
-import {
-  writableUserAuthAtom,
-  userAccessToken,
-  userAtomKey,
-} from "../store/authAtoms";
+import { writableUserAuthAtom, userAtomKey } from "../store/authAtoms";
 import { useAtom } from "jotai";
 import { useSnackbar } from "notistack";
-import { useAtomValue } from "jotai";
 
 const cognitoConfig: CognitoIdentityProviderClientConfig = {
   region: AppEnv.VITE_AWS_REGION,
@@ -84,7 +80,23 @@ export const useCognitoAuth = () => {
   };
 };
 
+const getStoredAuthResult = (): AuthenticationResultType | null => {
+  const authResult = localStorage.getItem(userAtomKey);
+  if (authResult) {
+    try {
+      return JSON.parse(authResult);
+    } catch (error) {
+      console.error("Failed to parse stored auth result:", error);
+      return null;
+    }
+  }
+  return null;
+};
+
 export const getUserAccessToken = () => {
-  const accessToken = localStorage.getItem(userAtomKey);
-  return accessToken;
+  const storedAuthResult = getStoredAuthResult();
+  if (storedAuthResult && storedAuthResult.AccessToken) {
+    return storedAuthResult.AccessToken;
+  }
+  return null;
 };

@@ -26,7 +26,7 @@ export const PreviewAndSubmit = (props: DetailedFarmerInfoFormProps) => {
   const [{ data: formSubmitResp, loading, error }, executePost] =
     useAuthedAxiosClient(
       {
-        url: "form/farmer-detail",
+        url: "/form/farmer-detail",
         method: "post",
       },
       {

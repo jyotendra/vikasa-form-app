@@ -57,7 +57,7 @@ const farmerDetailForm: FastifyPluginAsync = async (
 
   fastify.post("/form/farmer-detail", async (request, reply) => {
     const body = request.body as FarmerDetail;
-    console.log("Received farmer detail form data:", body);
+    fastify.log.info({ body }, "Received farmer detail form data ");
     reply.status(201).send({
       message: "Farmer detail form submitted successfully",
       data: body,

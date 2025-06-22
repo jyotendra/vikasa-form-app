@@ -10,7 +10,7 @@
         "IdToken": "minutes",
         "RefreshToken": "days"
       },
-      "UserPoolId": "local_1keBLzQp"
+      "UserPoolId": "us-east-1_local123"
     }
   }
 }
