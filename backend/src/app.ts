@@ -87,6 +87,8 @@ const app: FastifyPluginAsync<AppOptions> = async (
     autoHooks: true,
     cascadeHooks: true,
     options: opts,
+    forceESM: false,
+    maxDepth: 10, // Increase depth to allow nested folders
   });
 };
 
