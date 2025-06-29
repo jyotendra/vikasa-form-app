@@ -1,4 +1,3 @@
-import { atom } from "jotai";
 import { z } from "zod";
 
 export enum RelationType {
@@ -56,10 +55,7 @@ export const farmerDetailFormSchema = z.object({
 
 export type farmerDetailFormType = z.infer<typeof farmerDetailFormSchema>;
 
-export type farmerDetailCompleteType = {
+export type farmerDetailDto = {
   basicFarmerDetails: basicFarmerDetailType;
   detailedFarmerInfo: FarmerDetailForm;
 };
-
-export const basicFarmerDetailAtom = atom<basicFarmerDetailType | null>(null);
-export const farmerDetailFormAtom = atom<farmerDetailFormType | null>(null);
