@@ -81,15 +81,23 @@ const app: FastifyPluginAsync<AppOptions> = async (
   // define your routes in one of these
   void fastify.register(AutoLoad, {
     dir: join(__dirname, "authed-routes"),
-    dirNameRoutePrefix: function rewrite() {
-      return "api";
+    dirNameRoutePrefix: function rewrite(folderParent, folderName) {
+      // Only apply prefix to the root level, not nested folders
+      if (folderParent === join(__dirname, "authed-routes")) {
+        return "api";
+      }
+      return false; // No prefix for nested folders
     },
     autoHooks: true,
     cascadeHooks: true,
     options: opts,
     forceESM: false,
-    maxDepth: 10, // Increase depth to allow nested folders
+    maxDepth: 10,
+    matchFilter: (path) =>
+      path.endsWith(".route.ts") || path.endsWith(".route.js"),
   });
+
+  console.log(fastify.printRoutes());
 };
 
 export default app;

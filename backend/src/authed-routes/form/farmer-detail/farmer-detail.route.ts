@@ -25,13 +25,6 @@ const farmerDetailForm: FastifyPluginAsync = async (
       data: body,
     });
   });
-
-  fastify.get("/form/farmer-detail", async (request, reply) => {
-    reply.send({
-      message: "Dummy GET endpoint for farmer detail",
-      data: {},
-    });
-  });
 };
 
 export default farmerDetailForm;

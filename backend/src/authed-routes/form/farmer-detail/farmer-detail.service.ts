@@ -1,6 +1,6 @@
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { farmerDetailDto } from "./farmer-detail.model";
-import { dynamoDbConsts } from "../../config/consts";
+import { dynamoDbConsts } from "../../../config/consts";
 import { FormType } from "./form-type";
 
 export class AddFarmerDetailService {
